@@ -8,3 +8,7 @@ Running the Application
     node server.js
   
 Open HTML file in a web browser.
+
+
+
+replace 'your_mongo_db_uri' with your actual MongoDB connection string

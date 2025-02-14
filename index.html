@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS Pelayanan Publik</title>
+    <script>
+        async function fetchServices() {
+            const response = await fetch('http://localhost:5000/services');
+            const services = await response.json();
+            const servicesList = document.getElementById('servicesList');
+            servicesList.innerHTML = '';
+            services.forEach(service => {
+                const li = document.createElement('li');
+                li.textContent = `${service.title}: ${service.description}`;
+                servicesList.appendChild(li);
+            });
+        }
+
+        async function addService() {
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+
+            await fetch('http://localhost:5000/services', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title, description })
+            });
+
+            document.getElementById('title').value = '';
+            document.getElementById('description').value = '';
+            fetchServices();
+        }
+
+        window.onload = fetchServices;
+    </script>
+</head>
+<body>
+    <h1>CMS Pelayanan Publik Kabupaten Mimika</h1>
+    <h2>Add New Service</h2>
+    <input type="text" id="title" placeholder="Service Title" required>
+    <input type="text" id="description" placeholder="Service Description" required>
+    <button onclick="addService()">Add Service</button>
+
+    <h2>Available Services</h2>
+    <ul id="servicesList"></ul>
+</body>
+</html>
